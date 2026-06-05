@@ -10,7 +10,18 @@ class LeectorDeArchivos:
 
         lineas = entrada.readlines()
 
+        if len(lineas) == 0:
+            print("El archivo está vacío")
+            entrada.close()
+            salida.close()
+            return
+
         datos = lineas[0].split()
+        if len(datos) < 3:
+            print("Formato inválido")
+            entrada.close()
+            salida.close()
+            return
         filas = int(datos[0])
         columnas = int(datos[1])
         n = int(datos[2])
@@ -26,7 +37,14 @@ class LeectorDeArchivos:
         inicio = n + 2
 
         for i in range(inicio, inicio + q):
+
+            if i >= len(lineas):
+                print("Faltan operaciones en el archivo")
+                break
+
             partes = lineas[i].split()
+            if len(partes) == 0:
+                continue
             operacion = partes[0]
 
             if operacion == "GET":
@@ -76,7 +94,7 @@ class LeectorDeArchivos:
 
                 partes_resultados = ""
                 for nodo in nodos:
-                    partes_resultados += f"({nodo.fila}, {nodo.columna}, {nodo.valor}) "
+                    partes_resultados += f"({nodo.fila},{nodo.columna},{nodo.valor}) "
 
                 salida.write(f"TOP_K {k} = {partes_resultados.strip()}\n")
 
